@@ -218,10 +218,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead091c878f57374291e001a9b2e3a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTag: wow
   moveForce: 10
-  attackRange: 2.5
+  attackRadius: 2
+  attackRange: 8
+  attackForce: 12
   attackDelay: 1
+  attackCoolDown: 2
   target: {fileID: 0}
 --- !u!50 &596452014
 Rigidbody2D:
