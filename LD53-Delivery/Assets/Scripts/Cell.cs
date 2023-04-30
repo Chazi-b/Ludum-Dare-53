@@ -4,76 +4,43 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    [SerializeField] float moveForce;
-    [SerializeField] float attackRadius;
-    [SerializeField] float attackRange;
-    [SerializeField] float attackForce;
-    [SerializeField] float attackDelay;
-    [SerializeField] float attackCoolDown;
-    private Rigidbody2D rb;
+    public Faction faction;
+    [HideInInspector] public string foeString;
+    [Header("Stats")]
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float attackForce;
+    [SerializeField] private float collisionForce;
+    public float aggroRange;
+    [SerializeField] private float attackRange;
+    [SerializeField] private int health;
 
-    private bool attacking = false;
-    private bool canMove = true;
-    [HideInInspector] public Transform target = null;
+    [Header("Other Stuffs")]
+    [SerializeField] private Rigidbody2D rb;
+    public GameObject targetFunctionCell;
+    public GameObject homeFunctionCell;
 
+    public GameObject target;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        if (faction == Faction.Virus) { foeString = "ImmuneSystem"; transform.tag = "Virus"; }
+        else { foeString = "Virus"; transform.tag = "ImmuneSystem"; }
     }
     private void Update()
     {
-        
-        if (target != null) 
-        {
-            transform.up = target.position - transform.position; 
-            if(Vector2.Distance(rb.position, target.position) <= attackRange && !attacking)
-            {
-                StartCoroutine(Attack(attackDelay, target));
-            }
-        }
+        transform.up = target.transform.position - transform.position;
     }
+
     private void FixedUpdate()
     {
-        if(canMove && target != null) rb.AddForce(transform.up * moveForce);
+        rb.AddForce(transform.up * moveSpeed);
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!canMove)
+        if(collision.transform.CompareTag(foeString))
         {
-            Transform targetTransform = collision.transform;
-            if (!targetTransform.CompareTag("Player")) Destroy(targetTransform.gameObject);
-            else
-            {
-                for (var i = 0; i < 4; i++)
-                {
-                    targetTransform.GetComponent<CharacterController>().Throw(i);
-                }
-                targetTransform.GetComponent<Rigidbody2D>().AddForce(transform.up * attackForce, ForceMode2D.Impulse);
-            }
+            collision.transform.GetComponent<Rigidbody2D>().AddForce((collision.transform.position - transform.position)* collisionForce, ForceMode2D.Impulse);
         }
-    }
-
-    IEnumerator Attack(float wait, Transform targetTransform)
-    {
-        attacking = true;
-        canMove = false;
-        yield return new WaitForSeconds(wait);
-
-        if (targetTransform != null)
-        {
-            rb.AddForce(transform.up * attackForce, ForceMode2D.Impulse);
-        }
-        yield return new WaitForSeconds(attackCoolDown / 2);
-        canMove = true;
-        yield return new WaitForSeconds(attackCoolDown/2);
-        attacking = false;
-    }
-
-    void OnDrawGizmos()
-    {
-        
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

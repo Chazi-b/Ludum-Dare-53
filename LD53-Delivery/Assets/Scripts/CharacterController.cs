@@ -34,7 +34,7 @@ public class CharacterController : MonoBehaviour
             case 2: direction = -transform.up; break;
             case 3: direction = -transform.right; break;
         }
-        heldObjects[armIndex].GetComponent<Rigidbody2D>().AddForce((direction * throwForce) + (transform.up * moveForce * vertical), ForceMode2D.Impulse);
+        heldObjects[armIndex].GetComponent<Rigidbody2D>().AddForce((direction * throwForce) + (direction * moveForce * vertical), ForceMode2D.Impulse);
         StartCoroutine(ThrowDelay(0.2f, heldObjects[armIndex]));
         heldObjects[armIndex] = null;
 
@@ -60,7 +60,7 @@ public class CharacterController : MonoBehaviour
     private IEnumerator ThrowDelay(float wait, Transform thrownObj)
     {
         yield return new WaitForSeconds(wait);
-        Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), thrownObj.GetComponent<CircleCollider2D>(), false);
+        if(thrownObj != null) Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), thrownObj.GetComponent<CircleCollider2D>(), false);
 
     }
     private void Start()
