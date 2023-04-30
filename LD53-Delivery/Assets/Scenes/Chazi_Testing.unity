@@ -221,7 +221,7 @@ MonoBehaviour:
   targetTag: wow
   moveForce: 10
   attackRange: 2.5
-  attackDelay: 2
+  attackDelay: 1
   target: {fileID: 0}
 --- !u!50 &596452014
 Rigidbody2D:

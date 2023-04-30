@@ -23,7 +23,7 @@ public class CharacterController : MonoBehaviour
     public void Throw(int armIndex)
     {
         if (heldObjects[armIndex] == null) return;
-        Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), heldObjects[armIndex].GetComponent<CircleCollider2D>(), false);
+        
 
 
         Vector3 direction = Vector3.zero;
@@ -35,7 +35,9 @@ public class CharacterController : MonoBehaviour
             case 3: direction = -transform.right; break;
         }
         heldObjects[armIndex].GetComponent<Rigidbody2D>().AddForce((direction * throwForce) + (transform.up * moveForce * vertical), ForceMode2D.Impulse);
+        StartCoroutine(ThrowDelay(0.2f, heldObjects[armIndex]));
         heldObjects[armIndex] = null;
+
     }
 
     private void GrabOrThrow(int armIndex)
@@ -53,6 +55,13 @@ public class CharacterController : MonoBehaviour
         {
             Throw(armIndex);
         }
+    }
+
+    private IEnumerator ThrowDelay(float wait, Transform thrownObj)
+    {
+        yield return new WaitForSeconds(wait);
+        Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), thrownObj.GetComponent<CircleCollider2D>(), false);
+
     }
     private void Start()
     {

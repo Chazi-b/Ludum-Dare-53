@@ -11,5 +11,9 @@ public class TcellAggroRange : MonoBehaviour
         {
             tcell.target = collision.transform;
         }
+        else if (collision.CompareTag("Player"))
+        {
+            if (tcell.target == null) tcell.target = collision.transform;
+        }
     }
 }

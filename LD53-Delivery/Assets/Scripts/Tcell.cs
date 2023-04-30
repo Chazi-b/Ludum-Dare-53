@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Tcell : MonoBehaviour
 {
-    [SerializeField] string targetTag;
     [SerializeField] float moveForce;
     [SerializeField] float attackRange;
     [SerializeField] float attackDelay;
@@ -30,18 +29,15 @@ public class Tcell : MonoBehaviour
     {
         if (collision.transform.CompareTag("Player"))
         {
-            for(var i = 0; i < 4; i++)
-            {
-                collision.transform.GetComponent<CharacterController>().Throw(i);
-            }
+            StartCoroutine(Attack(attackDelay, collision.transform, true));
         }
         else if (collision.transform.CompareTag("Medicine"))
         {
-            StartCoroutine(Attack(attackDelay, collision.transform));
+            StartCoroutine(Attack(attackDelay, collision.transform, false));
         }
     }
 
-    IEnumerator Attack(float wait, Transform targetTransform)
+    IEnumerator Attack(float wait, Transform targetTransform, bool player)
     {
         attacking = true;
 
@@ -51,7 +47,14 @@ public class Tcell : MonoBehaviour
         {
             if (Vector2.Distance(rb.position, targetTransform.GetComponent<Rigidbody2D>().position) <= attackRange)
             {
-                Destroy(targetTransform.gameObject);
+                if(!player) Destroy(targetTransform.gameObject);
+                else
+                {
+                    for (var i = 0; i < 4; i++)
+                    {
+                        targetTransform.GetComponent<CharacterController>().Throw(i);
+                    }
+                }
             }
         }
 
