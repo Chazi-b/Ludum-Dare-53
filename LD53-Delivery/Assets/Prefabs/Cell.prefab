@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9035682228460041391}
   - component: {fileID: 619817991471453779}
   - component: {fileID: 3656349119295442566}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AggroRangeCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,9 +163,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.06, y: -0.07}
+  m_Offset: {x: -0.09, y: -0.1}
   serializedVersion: 2
-  m_Radius: 1.23
+  m_Radius: 1.58
 --- !u!114 &4198748711356735274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,6 +190,8 @@ MonoBehaviour:
   targetFunctionCell: {fileID: 0}
   homeFunctionCell: {fileID: 0}
   target: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetFunctionCellPosition: {x: 0, y: 0, z: 0}
 --- !u!50 &1931799505468038840
 Rigidbody2D:
   serializedVersion: 4

@@ -15,7 +15,14 @@ public class CellAggroRangeCollider : MonoBehaviour
     {
         if (collision.CompareTag(cell.foeString))
         {
-            cell.target = collision.gameObject;
+            if(cell.target != cell.targetFunctionCell)
+            {
+                if(Vector3.Distance(transform.position, collision.transform.position) < Vector3.Distance(transform.position, cell.target.transform.position))
+                {
+                    cell.target = collision.gameObject;
+                }
+            }
+            else cell.target = collision.gameObject;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
